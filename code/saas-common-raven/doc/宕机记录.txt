@@ -1,0 +1,15 @@
+1.2017年11月22日15:20:25
+【宕机时间】：2017-11-21 19:56:59.269
+【宕机原因】：终端关闭，flume，storm 随之停止
+【解决方法】：
+（1）：nohup /usr/local/apache-storm-0.10.2/bin/storm nimbus &
+（2）：nohup /usr/local/apache-storm-0.10.2/bin/storm supervisor &
+（3）：nohup /usr/local/apache-storm-0.10.2/bin/storm ui &
+（4）：nohup bin/flume-ng agent --conf-file  conf/flume-nginx-dir.properties -c conf/ --name a1 -Dflume.monitoring.type=http -Dflume.monitoring.port=5653 -Dflume.root.logger=INFO,console > ./start.log 2>&1 &
+（5）：后续有待测试、
+
+2.2017年12月1日18:45:39
+【宕机时间】：2017-11-21 19:56:59.269
+【宕机原因】：spout在默认超时时间(30s)内发射出去的Tuple没有被bolt处理就会出现spout failed。
+【解决方法】：
+调整修改默认超时时间（topology.message.timeout.secs）为60s，修改spout的缓存队列（topology.max.spout.pending）10000
